@@ -1,16 +1,35 @@
 package yahoo
 
 import (
-	"errors"
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"strings"
 )
 
-// QuoteResult contains
-type QuoteResult struct {
-	Name  string
-	Price float64
-}
+const baseURL = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/"
 
 // Quote returns stock price
 func Quote(symbol string) (QuoteResult, error) {
-	return QuoteResult{}, errors.New("not implemented")
+	result := QuoteResult{}
+	quoteEndpoint := baseURL + strings.ToUpper(symbol) + "?modules=price"
+
+	resp, err := http.Get(quoteEndpoint)
+	if err != nil {
+		return result, err
+	}
+
+	defer resp.Body.Close()
+
+	body, readErr := ioutil.ReadAll(resp.Body)
+	if readErr != nil {
+		return result, readErr
+	}
+
+	jsonErr := json.Unmarshal(body, &result)
+	if jsonErr != nil {
+		return result, jsonErr
+	}
+
+	return result, nil
 }

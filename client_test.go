@@ -9,5 +9,5 @@ import (
 func TestQuote(t *testing.T) {
 	actual, err := Quote("TSLA")
 	assert.Nil(t, err)
-	assert.Equal(t, "Tesla", actual.Name)
+	assert.Equal(t, "Tesla, Inc.", actual.QuoteSummary.Result[0].Price.ShortName)
 }
