@@ -1,3 +1,7 @@
+// Copyright 2020 Tony Mackay.
+// Use of this source code is governed by a MIT
+// license that can be found in the LICENSE file.
+
 package yahoo
 
 // QuoteResult type contains data returned from the Yahoo Finance Quote Endpoint
