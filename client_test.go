@@ -5,13 +5,24 @@
 package yahoo
 
 import (
+	"reflect"
 	"testing"
-
-	"github.com/alecthomas/assert"
 )
 
 func TestQuote(t *testing.T) {
-	actual, err := Quote("TSLA")
-	assert.Nil(t, err)
-	assert.Equal(t, "Tesla, Inc.", actual.QuoteSummary.Result[0].Price.ShortName)
+	tests := []struct {
+		input string
+		want  string
+	}{
+		{input: "TSLA", want: "Tesla, Inc."},
+		{input: "GOOG", want: "Alphabet Inc."},
+	}
+
+	for _, tc := range tests {
+		quote, _ := Quote(tc.input)
+		got := quote.QuoteSummary.Result[0].Price.ShortName
+		if !reflect.DeepEqual(tc.want, got) {
+			t.Fatalf("expected: %v, got: %v", tc.want, got)
+		}
+	}
 }
